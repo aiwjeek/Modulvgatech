@@ -1,318 +1,299 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>VGA TECH</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      user-select: none;
-    }
-    body {
-      margin: 0;
-      padding: 0;
-      background: #000;
-      color: #00ff00;
-      font-family: 'Share Tech Mono', monospace;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      background-size: cover;
-      background-position: center;
-      flex-direction: column;
-    }
-    #login, #player {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      width: 100%;
-      max-width: 400px;
-      padding: 20px;
-    }
-    #login.active, #player.active {
-      display: flex;
-    }
-    input[type="text"] {
-      padding: 10px;
-      font-size: 16px;
-      border: 2px solid #00ff00;
-      border-radius: 6px;
-      background: #000;
-      color: #00ff00;
-      margin-bottom: 10px;
-      width: 100%;
-      max-width: 300px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      border: 2px solid #00ff00;
-      background: #000;
-      color: #00ff00;
-      border-radius: 6px;
-      cursor: pointer;
-      margin: 5px;
-      transition: background 0.3s, color 0.3s;
-      user-select: none;
-    }
-    button:hover {
-      background: #00ff00;
-      color: #000;
-    }
-    .lcd {
-      width: 100%;
-      max-width: 360px;
-      height: 60px;
-      background: #000;
-      border: 2px solid #00ff00;
-      border-radius: 8px;
-      box-shadow: inset 0 0 15px #00ff00;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 20px 0;
-      font-size: 18px;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-    .controls, .speed-controls {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 15px;
-      flex-wrap: wrap;
-      justify-content: center;
-      width: 100%;
-      max-width: 360px;
-    }
-    .file-inputs {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      align-items: center;
-      width: 100%;
-      max-width: 360px;
-    }
-    .file-inputs label {
-      color: #00ff00;
-      font-size: 14px;
-      user-select: none;
-    }
-    .file-inputs input {
-      border: 1px solid #00ff00;
-      background: #000;
-      color: #00ff00;
-      padding: 6px 12px;
-      border-radius: 6px;
-      width: 100%;
-    }
-    audio {
-      display: none;
-    }
-    #error, #expiredNotice {
-      color: red;
-      margin-top: 10px;
-      min-height: 20px;
-      user-select: none;
-    }
-    .flash-green {
-      background-color: #00ff00 !important;
-      color: #000 !important;
-    }
-    .flash-red {
-      background-color: red !important;
-      color: #fff !important;
-    }
-    .flash-blue {
-      background-color: #007bff !important;
-      color: #fff !important;
-    }
-    .flash-reset {
-      background-color: #000 !important;
-      color: #00ff00 !important;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VGA TECH - Player Audio Voucher</title>
+<style>
+  * { box-sizing: border-box; user-select: none; }
+  body {
+    margin: 0; padding: 0; background: #000;
+    color: #00ff00;
+    font-family: 'Share Tech Mono', monospace;
+    display: flex; align-items: center; justify-content: center;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    transition: background-image 0.3s ease;
+  }
+  #login, #player {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+  }
+  #login.active, #player.active { display: flex; }
+  input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #00ff00;
+    border-radius: 6px;
+    background: #000;
+    color: #00ff00;
+    margin-bottom: 10px;
+    width: 100%;
+    text-transform: uppercase;
+  }
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: 2px solid #00ff00;
+    background: #000;
+    color: #00ff00;
+    border-radius: 6px;
+    cursor: pointer;
+    margin: 5px 3px;
+    transition: background 0.3s, color 0.3s;
+    user-select: none;
+  }
+  button:hover {
+    background: #00ff00;
+    color: #000;
+  }
+  .lcd {
+    width: 100%;
+    max-width: 360px;
+    height: 60px;
+    background: #000;
+    border: 2px solid #00ff00;
+    border-radius: 8px;
+    box-shadow: inset 0 0 15px #00ff00;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+    font-size: 18px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .controls, .speed-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .file-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+    max-width: 360px;
+  }
+  .file-inputs label {
+    color: #00ff00;
+    font-size: 14px;
+    user-select: none;
+  }
+  .file-inputs input {
+    border: 1px solid #00ff00;
+    background: #000;
+    color: #00ff00;
+    padding: 6px 12px;
+    border-radius: 6px;
+    width: 100%;
+  }
+  audio { display: none; }
+  #error, #expiredNotice {
+    color: red;
+    margin-top: 10px;
+    min-height: 20px;
+  }
+  #expiredNotice {
+    color: yellow;
+  }
+  .flash-green { background-color: #00ff00 !important; color: #000 !important; }
+  .flash-red { background-color: red !important; color: #fff !important; }
+  .flash-blue { background-color: #007bff !important; color: #fff !important; }
+  .flash-reset { background-color: #000 !important; color: #00ff00 !important; }
+</style>
 </head>
 <body>
   <div id="login" class="active" aria-label="Halaman login voucher">
     <h2>SILAKAN ISI VOUCHER</h2>
-    <input type="text" id="voucherInput" placeholder="Masukkan kode voucher (6 huruf/angka)" maxlength="6" aria-label="Input kode voucher" />
+    <input type="text" id="voucherInput" placeholder="Masukkan kode voucher" maxlength="6" aria-label="Input kode voucher" />
     <button id="loginBtn" onclick="login()">Masuk</button>
-    <div id="expiredNotice" style="display:none;" aria-live="polite" role="alert">
+    <div id="expiredNotice" style="display:none;" aria-live="polite">
       BELI VOUCHER LAGI KE NOMOR INI : 088290755733
     </div>
-    <div id="error" aria-live="assertive" role="alert"></div>
+    <div id="error" aria-live="assertive"></div>
   </div>
 
   <div id="player" aria-label="Halaman player audio">
-    <h2 id="sceneInfo"></h2>
-    <div class="lcd" id="lcdDisplay" aria-live="polite">Tidak ada audio</div>
+    <h2 id="sceneInfo">Memuat...</h2>
+    <div class="lcd" id="lcdDisplay">Tidak ada audio</div>
     <div class="controls">
-      <button id="prev" onclick="prevScene()" aria-label="Sebelumnya">◀ Prev</button>
-      <button id="play" onclick="playAudio()" aria-label="Putar">▶ Play</button>
-      <button id="stop" onclick="stopAudio()" aria-label="Berhenti">■ Stop</button>
-      <button id="next" onclick="nextScene()" aria-label="Berikutnya">Next ▶</button>
+      <button id="prev" onclick="prevScene()">◀ Prev</button>
+      <button id="play" onclick="playAudio()">▶ Play</button>
+      <button id="stop" onclick="stopAudio()">■ Stop</button>
+      <button id="next" onclick="nextScene()">Next ▶</button>
     </div>
     <div class="speed-controls">
-      <button id="slower" onclick="slower()" aria-label="Perlambat">- Speed</button>
-      <button id="faster" onclick="faster()" aria-label="Percepat">+ Speed</button>
-      <button id="rename" onclick="renameAudio()" aria-label="Ganti nama Basuri">GANTI NAMA BASURI</button>
+      <button onclick="slower()">- Speed</button>
+      <button onclick="faster()">+ Speed</button>
+      <button onclick="renameAudio()">GANTI NAMA BASURI</button>
     </div>
     <div class="file-inputs">
       <label for="bgInput">GANTI BACKGROUND</label>
-      <input type="file" id="bgInput" accept="image/*" aria-label="Ganti background" />
+      <input type="file" id="bgInput" accept="image/*" />
       <label for="audioInput">PILIH BASURI DARI FILE ANDA</label>
-      <input type="file" id="audioInput" accept="audio/*" aria-label="Pilih file audio" />
+      <input type="file" id="audioInput" accept="audio/*" />
     </div>
+    <button style="margin-top:10px;" onclick="logout()">Logout</button>
     <audio id="audioPlayer"></audio>
   </div>
 
-  <script>
-    // Daftar voucher 6 karakter alfanumerik, contoh sebagian
-    const voucherList = [
-      "X8K9J2", "MZ47KL", "D91QLT", "WZ83NE", "A72JKL", "Q19LXP", "BZ47KU", "C39NLE", "ZK81MO", "Y18WPL",
-      "NX29TR", "LK73QZ", "DV28HM", "UI47EP", "WP19LX", "BT48QL", "ME28XK", "VN39LU", "PT28NM", "AR48YX",
-      "KJ38PL", "RE49XM", "QK37LY", "XL20NP", "CW49ZX", "LK92TP", "UZ38NP", "KP48XM", "NX29LP", "HJ47XM",
-      "TA38LK", "GE47KP", "QT92LP", "MB18KL", "RX37NM", "VP29XL", "ZY38LP", "WL28XP", "QA47KM", "JZ39PL",
-      "EZ28LK", "NK37PU", "TZ19LP", "YX48KM", "PL28XO", "MN37QP", "ZR19LX", "DW28XM", "GL47NL", "TR38XP"
-    ];
+<script>
+  // Daftar kode voucher valid
+  const voucherList = [
+    "X8K9J2", "MZ47KL", "D91QLT", "WZ83NE", "A72JKL", "Q19LXP",
+    "BZ47KU", "C39NLE", "ZK81MO", "Y18WPL", "NX29TR", "LK73QZ",
+    "DV28HM", "UI47EP", "WP19LX", "BT48QL", "ME28XK", "VN39LU",
+    "PT28NM", "AR48YX", "KJ38PL", "RE49XM", "QK37LY", "XL20NP",
+    "CW49ZX", "LK92TP", "UZ38NP", "KP48XM", "NX29LP", "HJ47XM",
+    "TA38LK", "GE47KP", "QT92LP", "MB18KL", "RX37NM", "VP29XL",
+    "ZY38LP", "WL28XP", "QA47KM", "JZ39PL", "EZ28LK", "NK37PU",
+    "TZ19LP", "YX48KM", "PL28XO", "MN37QP", "ZR19LX", "DW28XM",
+    "GL47NL", "TR38XP"
+  ];
 
-    const totalScenes = 100;
-    let currentScene = 1;
-    let playbackRate = 1.0;
-    let isPlaying = false;
+  const totalScenes = 100;
+  let currentScene = 1;
+  let playbackRate = 1.0;
+  let isPlaying = false;
 
-    // Array menyimpan data scene audio dan nama file
-    const scenes = Array.from({ length: totalScenes }, () => ({ audio: null, name: null }));
+  // Array objek scene untuk simpan audio & nama
+  const scenes = Array.from({length: totalScenes}, () => ({ audio: null, name: null }));
 
-    const sceneInfo = document.getElementById("sceneInfo");
-    const lcdDisplay = document.getElementById("lcdDisplay");
-    const audioPlayer = document.getElementById("audioPlayer");
-    const bgInput = document.getElementById("bgInput");
-    const audioInput = document.getElementById("audioInput");
-    const errorDiv = document.getElementById("error");
-    const expiredNotice = document.getElementById("expiredNotice");
+  // Elemen DOM
+  const loginDiv = document.getElementById("login");
+  const playerDiv = document.getElementById("player");
+  const errorDiv = document.getElementById("error");
+  const expiredNotice = document.getElementById("expiredNotice");
+  const sceneInfo = document.getElementById("sceneInfo");
+  const lcdDisplay = document.getElementById("lcdDisplay");
+  const audioPlayer = document.getElementById("audioPlayer");
+  const bgInput = document.getElementById("bgInput");
+  const audioInput = document.getElementById("audioInput");
+  const loginBtn = document.getElementById("loginBtn");
 
-    function checkAccess() {
-      const expiry = localStorage.getItem("voucher_expiry");
-      if (expiry) {
-        const now = Date.now();
-        if (now < parseInt(expiry, 10)) {
-          showPlayer();
-          updateScene();
-          return true;
-        } else {
-          localStorage.removeItem("voucher_expiry");
-          expiredNotice.style.display = "block";
-          showLogin();
-          return false;
-        }
-      }
+  // Cek akses voucher saat load
+  window.onload = checkAccess;
+
+  function checkAccess() {
+    const expiry = localStorage.getItem("voucher_expiry");
+    if (expiry && Date.now() < Number(expiry)) {
+      showPlayer();
+      updateScene();
+    } else {
+      localStorage.removeItem("voucher_expiry");
+      expiredNotice.style.display = "block";
       showLogin();
-      return false;
     }
+  }
 
-    function showPlayer() {
-      document.getElementById("login").classList.remove("active");
-      document.getElementById("player").classList.add("active");
-      errorDiv.textContent = "";
-      expiredNotice.style.display = "none";
+  function login() {
+    errorDiv.textContent = "";
+    expiredNotice.style.display = "none";
+    let input = document.getElementById("voucherInput").value.trim().toUpperCase();
+
+    if(input.length !== 6) {
+      errorDiv.textContent = "Kode voucher harus 6 karakter.";
+      return;
     }
-
-    function showLogin() {
-      document.getElementById("player").classList.remove("active");
-      document.getElementById("login").classList.add("active");
-      errorDiv.textContent = "";
+    if(voucherList.includes(input)) {
+      const expiry = Date.now() + 7 * 24 * 60 * 60 * 1000; // 7 hari
+      localStorage.setItem("voucher_expiry", expiry.toString());
+      showPlayer();
+      updateScene();
+    } else {
+      errorDiv.textContent = "Kode voucher salah!";
     }
+  }
 
-    function login() {
-      const input = document.getElementById("voucherInput").value.trim().toUpperCase();
-      if (input.length !== 6) {
-        errorDiv.textContent = "Kode voucher harus 6 karakter.";
-        return;
-      }
-      if (voucherList.includes(input)) {
-        const expiry = Date.now() + 7 * 24 * 60 * 60 * 1000; // 7 hari
-        localStorage.setItem("voucher_expiry", expiry.toString());
-        showPlayer();
-        updateScene();
-      } else {
-        errorDiv.textContent = "Kode voucher salah!";
-      }
+  function showPlayer() {
+    loginDiv.classList.remove("active");
+    playerDiv.classList.add("active");
+  }
+
+  function showLogin() {
+    playerDiv.classList.remove("active");
+    loginDiv.classList.add("active");
+  }
+
+  function logout() {
+    localStorage.removeItem("voucher_expiry");
+    showLogin();
+  }
+
+  // Update info scene & lcd nama audio
+  function updateScene() {
+    const scene = scenes[currentScene - 1];
+    sceneInfo.textContent = `NOMOR : ${currentScene} / ${totalScenes}`;
+    lcdDisplay.textContent = scene.name || "Tidak ada audio";
+    // Background tetap seperti sebelumnya (tidak reset otomatis)
+  }
+
+  function playAudio() {
+    flashButton("play", "green");
+    const scene = scenes[currentScene - 1];
+    if(scene.audio) {
+      audioPlayer.src = scene.audio;
+      audioPlayer.playbackRate = playbackRate;
+      audioPlayer.play();
+      isPlaying = true;
+      lcdTemporary("PLAY");
     }
+  }
 
-    function updateScene() {
-      const scene = scenes[currentScene - 1];
-      sceneInfo.textContent = `NOMOR: ${currentScene} / ${totalScenes}`;
+  function stopAudio() {
+    flashButton("stop", "red");
+    audioPlayer.pause();
+    isPlaying = false;
+    lcdTemporary("STOP");
+  }
+
+  function nextScene() {
+    flashButton("next", "blue");
+    currentScene = currentScene < totalScenes ? currentScene + 1 : 1;
+    isPlaying = false;
+    audioPlayer.pause();
+    updateScene();
+  }
+
+  function prevScene() {
+    flashButton("prev", "blue");
+    currentScene = currentScene > 1 ? currentScene - 1 : totalScenes;
+    isPlaying = false;
+    audioPlayer.pause();
+    updateScene();
+  }
+
+  function slower() {
+    playbackRate = Math.max(0.5, playbackRate - 0.1);
+    audioPlayer.playbackRate = playbackRate;
+    lcdTemporary(`Speed: ${playbackRate.toFixed(1)}x`);
+  }
+
+  function faster() {
+    playbackRate = Math.min(2.0, playbackRate + 0.1);
+    audioPlayer.playbackRate = playbackRate;
+    lcdTemporary(`Speed: ${playbackRate.toFixed(1)}x`);
+  }
+
+  function lcdTemporary(text) {
+    const scene = scenes[currentScene - 1];
+    lcdDisplay.textContent = text;
+    setTimeout(() => {
       lcdDisplay.textContent = scene.name || "Tidak ada audio";
-    }
+    }, 700);
+  }
 
-    function playAudio() {
-      const scene = scenes[currentScene - 1];
-      if (scene.audio) {
-        audioPlayer.src = scene.audio;
-        audioPlayer.playbackRate = playbackRate;
-        audioPlayer.play().catch(() => {}); // Tangani error play otomatis jika ada
-        isPlaying = true;
-        lcdTemporary("PLAY");
-      } else {
-        lcdTemporary("Tidak ada audio untuk diputar");
-      }
-      flashButton("play", "green");
-    }
-
-    function stopAudio() {
-      audioPlayer.pause();
-      isPlaying = false;
-      lcdTemporary("STOP");
-      flashButton("stop", "red");
-    }
-
-    function nextScene() {
-      currentScene = currentScene < totalScenes ? currentScene + 1 : 1;
-      stopAudio();
-      updateScene();
-      flashButton("next", "blue");
-    }
-
-    function prevScene() {
-      currentScene = currentScene > 1 ? currentScene - 1 : totalScenes;
-      stopAudio();
-      updateScene();
-      flashButton("prev", "blue");
-    }
-
-    function slower() {
-      playbackRate = Math.max(0.5, (playbackRate - 0.1));
-      audioPlayer.playbackRate = playbackRate;
-      lcdTemporary(`Speed: ${playbackRate.toFixed(1)}x`);
-    }
-
-    function faster() {
-      playbackRate = Math.min(2.0, (playbackRate + 0.1));
-      audioPlayer.playbackRate = playbackRate;
-      lcdTemporary(`Speed: ${playbackRate.toFixed(1)}x`);
-    }
-
-    function lcdTemporary(text) {
-      const scene = scenes[currentScene - 1];
-      lcdDisplay.textContent = text;
-      setTimeout(() => {
-        lcdDisplay.textContent = scene.name || "Tidak ada audio";
-      }, 700);
-    }
-
-    function flashButton(id, color) {
-      const btn = document.getElementById(id);
-      if (!btn) return;
-      const flashClass = `flash-${color}`;
-      btn.classList.add(flashClass);
-      setTimeout(() => {
-        btn.classList.remove(flashClass);
-        btn.classList.add("flash-reset");
-        set
+  function flashButton(id, color) {
+    const btn = document.getElementById(id);
+    const flashClass = `flash-${color}`;
+    btn.classList.add(flashClass);
